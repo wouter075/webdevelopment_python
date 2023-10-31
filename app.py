@@ -1,4 +1,5 @@
 import os
+import pathlib
 from datetime import datetime
 from os.path import isfile, join, isdir
 
@@ -45,10 +46,10 @@ def hoofdstuk1():
 @app.route('/h2')
 def hoofdstuk2():
     # 4
-    out = ""
-    for a in range(1, 11, 2):
-        out += f'{a}<br>'
-    return out
+    # out = ""
+    # for a in range(1, 11, 2):
+    #     out += f'{a}<br>'
+    # return out
 
     # 5
     # html = ""
@@ -123,6 +124,8 @@ def hoofdstuk3():
 
 @app.route('/h4', methods=['GET', 'POST'])
 def hoofdstuk4():
+    # 10
+
     # 13
     # f = open("img/content.txt")
     # out = f.read()
@@ -187,23 +190,25 @@ def end():
     if request.args.get("file"):
         file = request.args.get("file")
         file_loc = cwd + "\\" + file
-        f = open(file_loc, "a")
 
-        file_size = humanize.naturalsize(os.path.getsize(file_loc))
+        if pathlib.Path(file_loc).is_file():
+            f = open(file_loc, "a")
 
-        if f.writable():
-            file_read = "Ja"
+            file_size = humanize.naturalsize(os.path.getsize(file_loc))
 
-        diff = datetime.now() - datetime.fromtimestamp(os.path.getmtime(file_loc))
-        file_time = humanize.naturaltime(diff)
+            if f.writable():
+                file_read = "Ja"
 
-        mime = mimetypes.guess_type(file_loc)[0].split("/")[0]
-        if mime == "image":
-            img = link_cwd + "\\" + file
+            diff = datetime.now() - datetime.fromtimestamp(os.path.getmtime(file_loc))
+            file_time = humanize.naturaltime(diff)
 
-        if mime == "text":
-            f = open(file_loc, "r")
-            text = html.escape(f.read())
+            mime = mimetypes.guess_type(file_loc)[0].split("/")[0]
+            if mime == "image":
+                img = link_cwd + "\\" + file
+
+            if mime == "text":
+                f = open(file_loc, "r")
+                text = html.escape(f.read())
 
     # crumbs
     crumbs = ""
@@ -224,8 +229,9 @@ def end():
 
 @app.route('/image/<path:file>')
 def photo(file=""):
-    # todo: check if file exists
-    return send_file(file)
+    if pathlib.Path(file).is_file():
+        return send_file(file)
+    return ""
 
 
 if __name__ == '__main__':
