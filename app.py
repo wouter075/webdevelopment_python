@@ -125,6 +125,17 @@ def hoofdstuk3():
 @app.route('/h4', methods=['GET', 'POST'])
 def hoofdstuk4():
     # 10
+    # out = ""
+    # images = os.listdir("img/back/")
+    # for i in images:
+    #     out += f'<a href="image/img/back/{i}">{i}</a><br>'
+
+    # 11
+    out = ""
+    images = os.listdir("img/back/")
+    for i in images:
+        out += f'<a href="/h4?img={i}">{i}</a><br>'
+
 
     # 13
     # f = open("img/content.txt")
@@ -137,8 +148,8 @@ def hoofdstuk4():
     # return out
 
     # 15
-    f = open("app.py")
-    out = f'<textarea>{html.escape(f.read())}</textarea>'
+    # f = open("app.py")
+    # out = f'<textarea>{html.escape(f.read())}</textarea>'
     return out
 
 
