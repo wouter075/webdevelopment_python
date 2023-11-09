@@ -198,6 +198,10 @@ def end():
         cwd = cwd + "\\" + link_cwd
         cwd = cwd.replace("\\\\", "\\")
 
+    if os.getcwd() not in os.path.relpath(cwd):
+        cwd = os.getcwd()
+        link_cwd = ""
+
     if request.args.get("file"):
         file = request.args.get("file")
         file_loc = cwd + "\\" + file
